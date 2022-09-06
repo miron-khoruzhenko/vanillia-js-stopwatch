@@ -1,3 +1,5 @@
+// TODO: заменить метод подсчета времени паузы на последнее время при паузе
+
 const startBtn  = document.querySelector(".start-btn");
 const resetBtn  = document.querySelector(".reset-btn");
 
@@ -10,26 +12,19 @@ let seconds     = 0;
 let miliseconds = 0;
 let mode        = 0;
 let startDate   = 0;
-let allPause    = 0;
+let timeOnPause    = 0;
 let pause       = 0;
 
 function startTimer(){
-    if (startDate === 0){
-        startDate = Date.now();
-    }
+    startDate = Date.now();
 
     if(mode === 0){
         mode = 1;
 
-        if(pause !== 0){
-            pause = Date.now() - pause;
-            allPause += pause;
-        }
-
         startBtn.innerText = "Stop"
 
         interval = setInterval(() => {
-            tens = Date.now() - startDate - allPause;
+            tens = Date.now() - startDate + timeOnPause;
 
             miliseconds = Math.floor(tens / 10 % 100);
             seconds     = Math.floor(tens / 1000);
@@ -48,8 +43,8 @@ function startTimer(){
     
         }, 13);
     }else{
-        pause = Date.now()
         mode = 0;
+        timeOnPause = tens
         startBtn.innerText = "Start";
 
         clearInterval(interval);
@@ -61,7 +56,7 @@ function resetTimer(){
 
     mode        = 0;
     tens        = 0;
-    allPause    = 0;
+    timeOnPause    = 0;
     pause       = 0;
     startDate   = 0;
 
